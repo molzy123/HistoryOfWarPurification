@@ -1,0 +1,8 @@
+﻿
+syntax = "proto3";
+package game.core.network;
+
+enum RequestType {
+  SERVER_TO_CLIENT = 0;
+  CLIENT_TO_SERVER = 1;
+}

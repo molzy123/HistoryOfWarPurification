@@ -1,0 +1,10 @@
+﻿syntax = "proto3";
+package game.core.network;
+import "RequestType.proto";
+import "google/protobuf/any.proto";
+message RequestMessage {
+  string requestId = 1;
+  RequestType type = 2;
+  string path = 3;
+  google.protobuf.Any body = 4;
+}
