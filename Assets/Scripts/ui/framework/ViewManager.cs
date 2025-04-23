@@ -17,6 +17,8 @@ namespace ui.frame
         private readonly GameObject _viewRoot;
         
         private readonly Dictionary<UILayer, Transform> _layerMap = new Dictionary<UILayer, Transform>();
+        
+        private readonly Dictionary<string, IView> _viewMap = new Dictionary<string, IView>();
 
         public ViewManager(GameObject viewRoot)
         {
@@ -33,12 +35,24 @@ namespace ui.frame
         {
         }
 
-        public void showView(string viewPrefabName, UILayer layer = UILayer.NORMAL)
+        public IView showView(string viewName, UILayer layer = UILayer.NORMAL)
         {
             Transform parent = _layerMap[layer];
-            IView view = _viewFactory.loadView(viewPrefabName, parent.gameObject);
+            IView view = _viewFactory.loadView(viewName, parent.gameObject);
+            _viewMap.Add(viewName, view);
             currentView = view;
             currentView.show();
+            return view;
+        }
+
+        public void hideView(string viewName)
+        {
+            _viewMap.TryGetValue(viewName, out IView view);
+            if (view != null)
+            {
+                view.hide();
+                _viewMap.Remove(viewName);
+            }
         }
 
         public override void update()

@@ -57,7 +57,7 @@ namespace affiliation
             return _affiliationGraph.haveEdge(source, target, AffiliationEdgeEnum.ATTACK);
         }
 
-        public override void destroy()
+        public override void OnDestroy()
         {
             foreach (KeyValuePair<AffiliationEnum,Affiliation> keyValuePair in _affiliationMap)
             {

@@ -4,6 +4,7 @@ using affiliation;
 using character.solider;
 using common.stateMachine;
 using DefaultNamespace;
+using DefaultNamespace.map;
 using ui.frame;
 using Unity.VisualScripting;
 using IState = common.stateMachine.IState;
@@ -20,8 +21,9 @@ namespace game_core
         {
             _machine = machine;
             _modules = new List<IModule>();
-            _modules.Add(new AffiliationManager());
-            _modules.Add(new SoliderManager());
+            // _modules.Add(new AffiliationManager());
+            // _modules.Add(new SoliderManager());
+            _modules.Add(new GridMapManager());
         }
         
         public void enter()
@@ -29,9 +31,7 @@ namespace game_core
             foreach (IModule module in _modules) { module.initialize(); }
             foreach (IModule module in _modules) { module.start(); }
             
-            Locator.fetch<ViewManager>().showView("HudViewUI");
-            Locator.fetch<ViewManager>().showView("WebSocketTestView");
-            
+            Locator.fetch<ViewManager>().showView("HudView");
         }
 
         public void update()
@@ -41,8 +41,10 @@ namespace game_core
 
         public void exit()
         {
-            foreach (IModule module in _modules) { module.destroy(); }
+            Locator.fetch<ViewManager>().hideView("HudView");
+            foreach (IModule module in _modules) { module.OnDestroy(); }
             _modules.Clear();
+            
         }
     }
 }

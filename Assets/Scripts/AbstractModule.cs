@@ -23,7 +23,7 @@ namespace DefaultNamespace
             Debug.Log(GetType().Name + " started");
         }
 
-        public virtual void destroy()
+        public virtual void OnDestroy()
         {
             Debug.Log(GetType().Name + " destroyed");
         }

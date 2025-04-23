@@ -13,13 +13,25 @@ namespace Factory
         
         public GameObject loadGameObject(string prefabName, GameObject parent)
         {
-            return Object.Instantiate(loadPrefab(prefabName), parent.transform);
+            GameObject prefab = loadPrefab(prefabName);
+            if (prefab == null)
+            {
+                Debug.LogError(prefabName + " could not be loaded");
+                return null;
+            }
+            return Object.Instantiate(prefab, parent.transform);
         }
 
 
         public GameObject loadGameObject(string prefabName)
         {
-            return Object.Instantiate(loadPrefab(prefabName));
+            GameObject prefab = loadPrefab(prefabName);
+            if (prefab == null)
+            {
+                Debug.LogError(prefabName + " could not be loaded");
+                return null;
+            }
+            return Object.Instantiate(prefab);
         }
 
 

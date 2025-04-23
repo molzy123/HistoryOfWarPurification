@@ -32,7 +32,7 @@ namespace game_core
 
         public void exit()
         {
-
+            Locator.fetch<ViewManager>().hideView("LoginView");
         }
     }
 }

@@ -26,7 +26,7 @@ namespace UI
         
         private void onClickPlay()
         {
-            Debug.Log("OnClickPlay");
+            Locator.fetch<GameMain>().switchState(GameStateEnum.GAME);
         }
         
         private void onClickSave()

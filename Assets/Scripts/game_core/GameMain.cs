@@ -52,6 +52,11 @@ public class GameMain : MonoBehaviour
     private void OnDestroy()
     {
         Locator.unregister<GameMain>();
-        coreModules.ForEach( module => module.destroy());
+        coreModules.ForEach( module => module.OnDestroy());
+    }
+    
+    public void switchState(GameStateEnum state)
+    {
+        gameStateMachine.switchState(state);
     }
 }

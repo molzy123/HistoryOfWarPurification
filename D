@@ -1,0 +1,114 @@
+using System.Text;
+using DefaultNamespace;
+using game_core;
+using Game.Core.Network;
+using Google.Protobuf;
+using Google.Protobuf.WellKnownTypes;
+using Protobuf;
+using TMPro;
+using ui.frame;
+using UnityEngine;
+using UnityEngine.UI;
+
+namespace UI
+{
+    public class HudView : ViewBase
+    {
+        [Binding] Button _btnCube { get; set; }
+        [Binding] Button _btnSquare { get; set; }
+        
+        private GameObject _currentCube; // 当前创建的cube引用
+        private bool _isPlacingCube = false; // 是否正在放置cube
+        private GridCell _currentGridCell; // 当前鼠标指向的GridCell
+        
+        protected override void onShow()
+        {
+            base.onShow();
+            onClick(_btnCube, createCube);
+            onClick(_btnSquare, createSquare);
+        }
+        
+        private void createCube()
+        {
+            // 如果已经在放置cube，则不重复创建
+            if (_isPlacingCube)
+                return;
+                
+            // 创建一个cube
+            _currentCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            _currentCube.name = "FollowingCube";
+            
+            // 设置初始位置，y坐标为1
+            _currentCube.transform.position = new Vector3(0, 1, 0);
+            
+            // 标记为正在放置cube状态
+            _isPlacingCube = true;
+        }
+        
+        private void createSquare()
+        {
+            Debug.Log("OnClickSave");
+        }
+        
+        private void Update()
+        {
+            // 获取鼠标指向的GridCell
+            UpdateCurrentGridCell();
+            
+            // 如果正在放置cube，让cube跟随鼠标移动
+            if (_isPlacingCube && _currentCube != null)
+            {
+                // 如果找到了GridCell，将cube放在GridCell的位置上
+                if (_currentGridCell != null)
+                {
+                    // 获取GridCell的位置，并将y坐标设为1
+                    Vector3 cellPosition = _currentGridCell.transform.position;
+                    _currentCube.transform.position = new Vector3(cellPosition.x, 1, cellPosition.z);
+                }
+                else
+                {
+                    // 如果没有找到GridCell，使用之前的射线检测方法
+                    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                    Plane plane = new Plane(Vector3.up, new Vector3(0, 0, 0));
+                    
+                    if (plane.Raycast(ray, out float distance))
+                    {
+                        Vector3 hitPoint = ray.GetPoint(distance);
+                        _currentCube.transform.position = new Vector3(hitPoint.x, 1, hitPoint.z);
+            }
+        }
+                
+                // 如果点击鼠标左键，完成放置
+                if (Input.GetMouseButtonDown(0))
+                {
+                    _isPlacingCube = false;
+                    _currentCube = null;
+    }
+}
+        }
+        
+        private void UpdateCurrentGridCell()
+        {
+            // 重置当前GridCell
+            _currentGridCell = null;
+            
+            // 从摄像机发射射线
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            
+            // 进行射线检测，检查是否击中了物体
+            if (Physics.Raycast(ray, out hit))
+            {
+                // 尝试获取击中物体上的GridCell组件
+                GridCell gridCell = hit.collider.GetComponent<GridCell>();
+                
+                // 如果找到了GridCell组件
+                if (gridCell != null)
+                {
+                    _currentGridCell = gridCell;
+                    Debug.Log($"当前指向的GridCell: {gridCell.name}");
+                }
+            }
+        }
+    }
+}

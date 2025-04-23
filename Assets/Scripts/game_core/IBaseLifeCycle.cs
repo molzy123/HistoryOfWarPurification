@@ -8,6 +8,6 @@ namespace UI
         
         void start();
         
-        void destroy();
+        void OnDestroy();
     }
 }
