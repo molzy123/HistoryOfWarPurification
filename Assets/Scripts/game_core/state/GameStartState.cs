@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using affiliation;
+using building;
 using character.solider;
 using common.stateMachine;
 using DefaultNamespace;
@@ -24,6 +25,8 @@ namespace game_core
             // _modules.Add(new AffiliationManager());
             // _modules.Add(new SoliderManager());
             _modules.Add(new GridMapManager());
+            _modules.Add(new BuildingManager());
+            
         }
         
         public void enter()

@@ -3,5 +3,6 @@
     public enum EventEnum
     {
         START,
+        BUILDING_CHANGED,
     }
 }

@@ -20,6 +20,10 @@ namespace building
             home.transform.localScale = spawnPoint;
             return home;
         }
-        
+
+        public GameObject createCube1()
+        {
+            return loadGameObject("Building/Cube1");
+        }
     }
 }

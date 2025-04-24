@@ -4,8 +4,12 @@ using UnityEngine;
 
 namespace building
 {
-    public class Building : GameObjectSolid
+    public class Building : MonoBehaviour
     {
-        public Vector3 position { get; set; }
+        
+        
+        
+        
+        
     }
 }
